@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Tag;
+use App\Models\User;
 use App\Models\Article;
 use App\Models\Category;
 use Illuminate\Support\Str;
@@ -146,6 +147,24 @@ class AdminController extends Controller
 
         $article->tags()->sync($request->tags);
 
+
+        $articleOwner = $article->user_id;
+
+        if($article->status === 'published'){
+            $message = 'Your Article has been approved - <a href="'.route('article.show', ['category' => $article->category->slug, 'slug' => $article->slug]).'">' . $article->title . '</a>';
+        }elseif($article->status === 'rejected'){
+            $message = 'Your Article "'.$article->title.'" has been rejected';
+        }else{
+            $message = 'Your Article "'.$article->title.'" still pending.';
+        }
+
+        Notification::create([
+            'type'   => 'article',
+            'user_id' => $articleOwner,
+            'article_id' => $article->id,
+            'message'   => $message,
+            'status'    => 'unread'
+        ]);
         return redirect()->back()->with('success', 'Article updated successfully.');
     }
 
