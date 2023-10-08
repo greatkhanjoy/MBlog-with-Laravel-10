@@ -2,15 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProfileUpdateRequest;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
+use App\Models\User;
 use Illuminate\View\View;
+use Illuminate\Http\Request;
+use App\Traits\ImageUploadTrait;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Redirect;
+use App\Http\Requests\ProfileUpdateRequest;
 
 class ProfileController extends Controller
 {
+    use ImageUploadTrait;
     /**
      * Display the user's profile form.
      */
@@ -26,15 +29,42 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        // dd($request->all());
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'unique:users,email,' . Auth::user()->id],
+            'username' => ['required', 'alpha:ascii', 'unique:users,username,' . Auth::user()->id],
+            'image' => ['image'],
+            'bio' => ['string', 'nullable'],
+            'twitter' => ['string', 'nullable'],
+            'facebook' => ['string', 'nullable'],
+            'instagram' => ['string', 'nullable'],
+            'linkedin' => ['string', 'nullable']
+        ]);
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
-        }
+        $user = User::findOrFail(Auth::user()->id);
 
-        $request->user()->save();
+        $user->update([
+            'name'  => $request->name,
+            'email'  => $request->email,
+            'username'  => $request->username,
+            'image'  => $this->updateImage($request, 'image', 'uploads', $user->image),
+            'bio'  => $request->bio,
+            'twitter'  => $request->twitter,
+            'facebook'  => $request->facebook,
+            'instagram'  => $request->instagram,
+            'linkedin'  => $request->linkedin,
+        ]);
 
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        // $request->user()->fill($request->validated());
+
+        // if ($request->user()->isDirty('email')) {
+        //     $request->user()->email_verified_at = null;
+        // }
+
+        // $request->user()->save();
+
+        return Redirect::route('profile.edit')->with(['status' => 'profile-updated', 'success' => 'Updated Successfully.' ]);
     }
 
     /**
@@ -42,10 +72,14 @@ class ProfileController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
-        $request->validateWithBag('userDeletion', [
-            'password' => ['required', 'current_password'],
-        ]);
+        // $request->validateWithBag('userDeletion', [
+        //     'password' => ['required', 'current_password'],
+        // ]);
 
+        $request->validate([
+            'password' => ['required', 'current_password']
+        ]);
+        
         $user = $request->user();
 
         Auth::logout();

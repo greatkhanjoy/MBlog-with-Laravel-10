@@ -16,10 +16,20 @@ class UserFactory extends Factory
      * @return array<string, mixed>
      */
     public function definition(): array
-    {
+    {   $images = [
+            'assets/img/author/author-thumb-1.webp',
+            'assets/img/author/author-thumb-2.webp',
+            'assets/img/author/author-thumb-3.webp',
+            'assets/img/author/author-thumb-4.webp',
+            'assets/img/author/author-thumb-5.webp',
+        ];
         return [
             'name' => fake()->name(),
+            'username' => fake()->unique()->userName(),
             'email' => fake()->unique()->safeEmail(),
+            'image' => fake()->randomElement($images),
+            'role'  => fake()->randomElement(['admin', 'editor', 'user']),
+            'bio'   => fake()->paragraph(),
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'remember_token' => Str::random(10),

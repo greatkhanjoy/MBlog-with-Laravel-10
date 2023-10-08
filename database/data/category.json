@@ -1,0 +1,55 @@
+[
+    {
+        "name"  : "Politics",
+        "slug"  :  "politics"
+    },
+    {
+        "name"  : "Fashion",
+        "slug"  :  "fashion"
+    },
+    {
+        "name"  : "Lifestyle",
+        "slug"  :  "lifestyle"
+    },
+    {
+        "name"  : "Culture",
+        "slug"  :  "culture"
+    },
+    {
+        "name"  : "News",
+        "slug"  :  "news"
+    },
+    {
+        "name"  : "Tutorials",
+        "slug"  :  "tutorials"
+    },
+    {
+        "name"  : "Tech",
+        "slug"  :  "tech"
+    },
+    {
+        "name"  : "Internet",
+        "slug"  :  "internet"
+    },
+    {
+        "name"  : "Tips",
+        "slug"  :  "tips"
+    },
+    {
+        "name"  : "Health",
+        "slug"  :  "health"
+    },
+    {
+        "name"  : "Entertainment",
+        "slug"  :  "entertainment"
+    },
+    {
+        "name"  : "Games",
+        "slug"  :  "games"
+    },
+    {
+        "name"  : "Electronics",
+        "slug"  :  "electronics"
+    }
+]
+
