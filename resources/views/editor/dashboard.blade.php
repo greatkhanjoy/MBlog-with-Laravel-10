@@ -54,7 +54,6 @@
               <table class="table">
                   <thead>
                     <tr>
-                      <th scope="col">#</th>
                       <th scope="col">Message</th>
                       <th scope="col">status</th>
                       <th scope="col">Date</th>
@@ -66,7 +65,6 @@
 
                     @foreach ($notifications as $notification )    
                     <tr>
-                      <th scope="row">{{$notification->id}}</th>
                       <td>{!! $notification->message!!}</td>
                       <td>{{ $notification->status}}</td>
                       <td>{{$notification->created_at->format('M d, Y | g:i A')}}</td>

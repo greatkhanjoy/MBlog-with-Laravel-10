@@ -28,7 +28,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 
 
 Route::get('/dashboard', function () {
-    $notifications = Notification::where('user_id', Auth()->user()->id)->paginate(10);
+    $notifications = Notification::where('user_id', Auth()->user()->id)->orderBy('id', 'desc')->paginate(10);
     return view('dashboard', compact('notifications'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 

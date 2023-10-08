@@ -29,7 +29,7 @@ class EditorController extends Controller
 
     public function dashboard()
     {
-        $notifications = Notification::where('user_id', Auth()->user()->id)->paginate(10);
+        $notifications = Notification::where('user_id', Auth()->user()->id)->orderBy('id', 'desc')->paginate(10);
         return view('editor.dashboard', compact('notifications'));
     }
 
@@ -69,7 +69,7 @@ class EditorController extends Controller
             'category_id' => $request->category,
             'thumbnail' => $this->uploadImage($request, 'thumbnail', 'uploads/articles' ),
             'user_id'   => Auth::user()->id,
-            'status'    => 'published',
+            'status'    => 'pending',
             'is_featured'    => $request->is_featured === 'yes' ? true : false,
             'is_trending'    => $request->is_trending === 'yes' ? true : false,
         ]);
@@ -135,7 +135,7 @@ class EditorController extends Controller
             'category_id' => $request->category,
             'thumbnail' => $this->updateImage($request, 'thumbnail', 'uploads/articles', $article->thumbnail ),
             'user_id'   => Auth::user()->id,
-            'status'    => 'published',
+            'status'    => 'pending',
             'is_featured'    => $request->is_featured === 'yes' ? true : false,
             'is_trending'    => $request->is_trending === 'yes' ? true : false,
         ]);
